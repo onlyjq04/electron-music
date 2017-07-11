@@ -1,0 +1,14 @@
+.my-music-player {
+  .mp-playlist {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: beige;
+    ul {
+      list-style-type: none;
+    }
+  }
+  .mp-search-bar {
+    float: right;
+    padding-right: 10px;
+  }
+}
