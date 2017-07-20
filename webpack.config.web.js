@@ -3,10 +3,10 @@ const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
 
 const webpackConfig = merge.smart(baseConfig, {
-  output:  {
-    path:       __dirname + '/build',
+  output: {
+    path: __dirname + '/build',
     publicPath: 'http://localhost:8082/',
-    filename:   'index_bundle.js'
+    filename: 'index_bundle.js'
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -15,10 +15,10 @@ const webpackConfig = merge.smart(baseConfig, {
       }
     })
   ],
-  node:    {
+  node: {
     fs: 'empty'
   },
-  target:  'web'
+  target: 'web'
 });
 
 module.exports = webpackConfig;
