@@ -1,9 +1,9 @@
 import React from 'react';
 function Playlist(props) {
-  let playlist = props.songs.map((song, idx) => {
+  let playlist = props.tracks.map((t, idx) => {
     return (
-      <li key={idx} onClick={props.handleOnClick.bind(this, song.name)}>
-        {song.name}
+      <li key={idx} onClick={props.handleOnClick.bind(this, t)}>
+        {t.title}
       </li>
     );
   });

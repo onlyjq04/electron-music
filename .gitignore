@@ -67,3 +67,6 @@ typings/
 # Project specific
 music/
 build/
+bin/
+
+*music-index*

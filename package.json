@@ -7,7 +7,7 @@
     "electron": "webpack --watch --config webpack.config.electron.js electron",
     "web": "webpack-dev-server --config webpack.config.web.js --hot --inline",
     "//": "IMPORTANT! make sure to ignore the target directory when packing!",
-    "bin": "webpack  --config webpack.config.electron.js electron -p && electron-packager ./ timeTracker --out ./bin --platform darwin --arch x64 --version=1.7.2 --icon=assets/timeTracker.icns --overwrite --ignore=\"ignore|bin|node_modules\""
+    "bin": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./bin --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\""
   },
   "author": "",
   "license": "ISC",
@@ -19,8 +19,6 @@
     "electron-reload": "^1.2.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
-    "levelup": "^1.3.8",
-    "marked": "^0.3.6",
     "react": "^15.6.1",
     "react-autocomplete": "^1.5.9",
     "react-desktop": "^0.3.1",

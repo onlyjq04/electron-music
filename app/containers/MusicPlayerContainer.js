@@ -5,58 +5,60 @@ import Search from '../components/Search';
 import Playlist from '../components/Playlist';
 import PlayButton from '../components/PlayButton';
 
-
-import data from '../lib/data/api';
-
-import config from '../config';
 import playListStore from '../lib/store/playListStore';
+
+const config = require('../config');
+const Track = require('../lib/model/track');
 
 class MusicPlayerContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      songs: [],
-      currentPlaying: null,
-      buttonName: 'Play'
+      tracks: [],
+      currentState: 'paused'
     };
   }
 
   componentDidMount() {
-    data.getTracks(config.libraryPath).then(tracks => {
-      this.setState({songs: tracks});
+    Track.scan()
+      .then(() => {
+        this.setState({
+          tracks: Track.content
+        });
+      })
+      .catch(err => {
+        console.trace(err);
+        alert(`Scan library encounters an error! ${err}`);
+      });
+  }
+
+  _handleItemClick(track) {
+    let returnedState;
+    playListStore.notifyOnClick(track.title);
+
+    returnedState = playListStore.togglePlay(this.state.currentState, track);
+
+    this.setState({
+      currentState: returnedState
     });
   }
 
-  _handleClick(song) {
-    playListStore.notifyOnClick(song);
-    
-    playListStore.togglePlay(this.state.buttonName, song);
-    this.setState({
-      currentPlaying: song,
-      buttonName: 'Pause'
-    });
-  }
-  
   _handleButtonClick() {
-    playListStore.notifyOnClick(this.state.currentPlaying);
-    playListStore.togglePlay(this.state.buttonName, this.state.currentPlaying);
-    if (this.state.currentPlaying && this.state.buttonName === 'Play') {
-      this.setState({
-        buttonName: 'Pause'
-      });
-    } else {
-      this.setState({
-        buttonName: 'Play'
-      });
-    }
+    let returnedState;
+    returnedState = playListStore.togglePlay(this.state.currentState);
+    this.setState({
+      currentState: returnedState
+    });
   }
 
   render() {
+    let buttonName = this.state.currentState === 'play' ? 'Pause' : 'Play';
+
     return (
       <div className="my-music-player">
         <div className="mp-playlist">
-          <Playlist songs={this.state.songs} handleOnClick={this._handleClick.bind(this)} />
-          <PlayButton displayName={this.state.buttonName} handleOnClick={this._handleButtonClick.bind(this)}/>
+          <Playlist tracks={this.state.tracks} handleOnClick={this._handleItemClick.bind(this)} />
+          <PlayButton status={this.state.currentState} handleOnClick={this._handleButtonClick.bind(this)} />
         </div>
         <div className="fixed-top">
           <span>
