@@ -8,7 +8,7 @@ import PlayButton from '../components/PlayButton';
 import playListStore from '../lib/store/playListStore';
 
 const config = require('../config');
-const Track = require('../lib/model/track');
+const library = require('../lib/model/library')();
 
 class MusicPlayerContainer extends React.Component {
   constructor(props) {
@@ -20,10 +20,14 @@ class MusicPlayerContainer extends React.Component {
   }
 
   componentDidMount() {
-    Track.scan()
+    library
+      .scan()
+      .then(() => {
+        return library.load();
+      })
       .then(() => {
         this.setState({
-          tracks: Track.content
+          tracks: library.content
         });
       })
       .catch(err => {
