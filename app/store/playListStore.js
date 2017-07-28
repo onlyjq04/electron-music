@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../app.config');
 const {ipcRenderer} = require('electron');
 const fs = require('fs');
 const path = require('path');

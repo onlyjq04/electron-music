@@ -10,10 +10,11 @@
     "bin": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./bin --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\""
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.16.2",
     "babelify": "^7.3.0",
+    "bluebird": "^3.5.0",
     "classnames": "^2.2.5",
     "electron": "^1.6.11",
     "electron-reload": "^1.2.1",
@@ -23,9 +24,10 @@
     "react-autocomplete": "^1.5.9",
     "react-desktop": "^0.3.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-sound": "^0.6.1",
-    "soundmanager2": "^2.97.20170602"
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

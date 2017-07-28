@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-const config = require('../../config');
+const config = require('../../app.config');
 const fs = Promise.promisifyAll(require('fs'));
 const path = require('path');
 
