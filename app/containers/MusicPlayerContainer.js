@@ -5,10 +5,10 @@ import Search from '../components/Search';
 import Playlist from '../components/Playlist';
 import PlayButton from '../components/PlayButton';
 
-import playListStore from '../lib/store/playListStore';
+import playListStore from '../store/playListStore';
 
-const config = require('../config');
-const library = require('../lib/model/library')();
+const config = require('../../app.config');
+const library = require('../model/library')();
 
 class MusicPlayerContainer extends React.Component {
   constructor(props) {
