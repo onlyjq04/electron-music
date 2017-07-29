@@ -7,7 +7,8 @@
     "electron": "webpack --watch --config webpack.config.electron.js electron",
     "web": "webpack-dev-server --config webpack.config.web.js --hot --inline",
     "//": "IMPORTANT! make sure to ignore the target directory when packing!",
-    "bin": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./bin --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\""
+    "buildmac": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./mac --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\"",
+    "buildlinux": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./linux --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\""
   },
   "author": "",
   "license": "MIT",

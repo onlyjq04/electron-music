@@ -68,5 +68,9 @@ typings/
 music/
 build/
 bin/
+mac/
+linux/
+windows/
 
+package-lock.json
 *music-index*
