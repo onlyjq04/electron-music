@@ -1,5 +1,7 @@
 const path = require('path');
+const app = require('./src/app.electron');
 module.exports = {
-  libraryPath: '/Users/yjq/Projects/electron-music/music',
-  rootPath: '/Users/yjq/Projects/electron-music',
+  rootPath: app.getAppPath(),
+  userDataPath: path.join(this.rootPath, 'user-data.json'),
+  musicIndexPath: path.join(this.rootPath, 'music-index.json')
 };

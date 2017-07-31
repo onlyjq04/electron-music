@@ -7,8 +7,7 @@
     "electron": "webpack --watch --config webpack.config.electron.js electron",
     "web": "webpack-dev-server --config webpack.config.web.js --hot --inline",
     "//": "IMPORTANT! make sure to ignore the target directory when packing!",
-    "buildmac": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./mac --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\"",
-    "buildlinux": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./linux --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\""
+    "build": "set NODE_ENV=production && webpack --config webpack.config.product.js electron -p && electron-packager ./ ElecMusic --out ./mac --platform darwin --arch x64 --overwrite --ignore=\"ignore|bin|node_modules\""
   },
   "author": "",
   "license": "MIT",
@@ -31,6 +30,7 @@
     "react-sound": "^0.6.1",
     "redux": "^3.7.2",
     "superagent": "^3.5.2"
+  },
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",

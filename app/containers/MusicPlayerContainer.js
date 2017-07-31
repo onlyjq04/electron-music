@@ -8,11 +8,11 @@ import PlayButton from '../components/PlayButton';
 import playListStore from '../store/playListStore';
 
 const config = require('../../app.config');
-const library = require('../model/library')();
 
 class MusicPlayerContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.library = this.props.library;
     this.state = {
       tracks: [],
       currentState: 'paused'
@@ -20,14 +20,14 @@ class MusicPlayerContainer extends React.Component {
   }
 
   componentDidMount() {
-    library
+    this.library
       .scan()
       .then(() => {
-        return library.load();
+        return this.library.load();
       })
       .then(() => {
         this.setState({
-          tracks: library.content
+          tracks: this.library.content
         });
       })
       .catch(err => {
@@ -63,14 +63,6 @@ class MusicPlayerContainer extends React.Component {
         <div className="mp-playlist">
           <Playlist tracks={this.state.tracks} handleOnClick={this._handleItemClick.bind(this)} />
           <PlayButton status={this.state.currentState} handleOnClick={this._handleButtonClick.bind(this)} />
-        </div>
-        <div className="fixed-top">
-          <span>
-            Library Location: {config.libraryPath}
-          </span>
-          <span className="mp-search-bar">
-            <Search found={[]} />
-          </span>
         </div>
       </div>
     );
