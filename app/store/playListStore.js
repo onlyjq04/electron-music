@@ -1,11 +1,24 @@
-const config = require('../../app.config');
 const {ipcRenderer} = require('electron');
-const fs = require('fs');
-const path = require('path');
+const remote = require('electron').remote;
+const {app} = remote;
+const library = require('../model/library')(app.getPath('userData'));
 
 let currentPlaying = null;
 
 const playListStore = {
+  getTracks() {
+    let tracks = library.getContent();
+    return tracks;
+  },
+  listLibraries() {
+    return library.listLibraryPath();
+  },
+  addToLib(dir) {
+    return library.addLibraryPath(dir);
+  },
+  deleteLibrary(dir) {
+    library.deleteLibraryPath(dir);
+  },
   notifyOnClick(song) {
     let notif = new window.Notification('You have clicked on a song', {
       body: song,

@@ -1,21 +1,31 @@
 import React from 'react';
+import LibraryModal from './LibraryModal';
 
-class TopBar extends React.Components {
+class TopBar extends React.Component {
   constructor(props) {
     super(props);
-    this.library = this.props.library;
+    this.state = {
+      showLibraryModal: false
+    };
+  }
+
+  onLibrarySettings(e) {
+    e.preventDefault();
+    this.setState({
+      showLibraryModal: !this.state.showLibraryModal
+    });
   }
 
   render() {
     return (
       <div className="fixed-top">
         <span>
-          Library Location: {this.library.path}
+          <button onClick={this.onLibrarySettings.bind(this)}>Library Settings</button>
         </span>
-        <span className="mp-search-bar">
-          <Search list={this.library.list} />
-        </span>
+        <LibraryModal show={this.state.showLibraryModal} />
       </div>
     );
   }
 }
+
+export default TopBar;

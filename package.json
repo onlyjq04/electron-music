@@ -21,6 +21,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "lame": "^1.2.4",
+    "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-autocomplete": "^1.5.9",
     "react-desktop": "^0.3.1",

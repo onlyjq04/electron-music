@@ -1,18 +1,15 @@
 require('../styles/music-player.scss');
 
 import React from 'react';
-import Search from '../components/Search';
+import TopBar from './TopBar';
 import Playlist from '../components/Playlist';
 import PlayButton from '../components/PlayButton';
 
 import playListStore from '../store/playListStore';
 
-const config = require('../../app.config');
-
 class MusicPlayerContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.library = this.props.library;
     this.state = {
       tracks: [],
       currentState: 'paused'
@@ -20,20 +17,9 @@ class MusicPlayerContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.library
-      .scan()
-      .then(() => {
-        return this.library.load();
-      })
-      .then(() => {
-        this.setState({
-          tracks: this.library.content
-        });
-      })
-      .catch(err => {
-        console.trace(err);
-        alert(`Scan library encounters an error! ${err}`);
-      });
+    this.setState({
+      tracks: playListStore.getTracks()
+    });
   }
 
   _handleItemClick(track) {
@@ -56,10 +42,11 @@ class MusicPlayerContainer extends React.Component {
   }
 
   render() {
-    let buttonName = this.state.currentState === 'play' ? 'Pause' : 'Play';
-
+    // let buttonName = this.state.currentState === 'play' ? 'Pause' : 'Play';
+    
     return (
       <div className="my-music-player">
+        <TopBar libraries={playListStore.listLibraries()}/>
         <div className="mp-playlist">
           <Playlist tracks={this.state.tracks} handleOnClick={this._handleItemClick.bind(this)} />
           <PlayButton status={this.state.currentState} handleOnClick={this._handleButtonClick.bind(this)} />

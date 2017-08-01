@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const path = require('path');
 const MUSIC_EXT = ['.mp3'];
+const defaultMusicDir = require('electron').remote.app.getPath('music');
 const musicIndexFileName = 'music-index.json';
 const settingFileName = 'user-setting.json';
 
@@ -36,16 +37,16 @@ function _buildIndex() {
 
 module.exports = function(configPath) {
   const userSettingPath = path.join(configPath, settingFileName);
-
+  console.debug(configPath);
   if (!initialized) {
     if (!fs.existsSync(userSettingPath)) {
       userData = {
         user: 'Default',
-        library: []
+        library: [defaultMusicDir]
       };
       fs.writeFileSync(userSettingPath, JSON.stringify(userData, null, 2));
     } else {
-      userData = require(userSettingPath);
+      userData = JSON.parse(fs.readFileSync(userSettingPath));
     }
 
     indexPath = path.join(configPath, musicIndexFileName);
@@ -73,6 +74,7 @@ module.exports = function(configPath) {
     deleteLibraryPath(dir) {
       let idx = userData.library.indexOf(dir);
       userData.library.splice(idx, 1);
+      fs.writeFileSync(userSettingPath, JSON.stringify(userData, null, 2));
       return idx;
     },
 
