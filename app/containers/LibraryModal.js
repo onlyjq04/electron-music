@@ -41,6 +41,7 @@ class LibraryModal extends React.Component {
   }
 
   addToLib() {
+    let self = this;
     return function() {
       dialog.showOpenDialog(
         {
@@ -49,6 +50,9 @@ class LibraryModal extends React.Component {
         function(filePath) {
           if (filePath.length > 0) {
             playListStore.addToLib(filePath[0]);
+            self.setState({
+              content: self.constructContent()
+            });
           }
         }
       );
