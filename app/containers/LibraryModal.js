@@ -47,7 +47,9 @@ class LibraryModal extends React.Component {
           properties: ['openDirectory', 'multiSelections', 'createDirectory']
         },
         function(filePath) {
-          playListStore.addToLib(filePath[0]);
+          if (filePath.length > 0) {
+            playListStore.addToLib(filePath[0]);
+          }
         }
       );
     };
