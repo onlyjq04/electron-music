@@ -1,3 +1,5 @@
+require('./modalTemplate.scss');
+
 import React from 'react';
 
 function ModalTemplate(props) {
@@ -13,7 +15,7 @@ function ModalTemplate(props) {
   return (
     <div className="modal-show">
       <div className="modal-content">
-        <i className="fa fa-times close-modal-btn" aria-hidden="true" />
+        <i className="fa fa-times-circle-o close-modal-btn" onClick={props.closeCtrl} aria-hidden="true" />
         <h2>
           {props.title}
         </h2>

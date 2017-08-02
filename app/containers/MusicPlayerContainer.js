@@ -1,10 +1,7 @@
-require('../styles/music-player.scss');
-
 import React from 'react';
-import TopBar from './TopBar';
+
 import Playlist from '../components/Playlist';
 import PlayButton from '../components/PlayButton';
-
 import playListStore from '../store/playListStore';
 
 class MusicPlayerContainer extends React.Component {
@@ -43,11 +40,10 @@ class MusicPlayerContainer extends React.Component {
 
   render() {
     // let buttonName = this.state.currentState === 'play' ? 'Pause' : 'Play';
-    
+
     return (
-      <div className="my-music-player">
-        <TopBar libraries={playListStore.listLibraries()}/>
-        <div className="mp-playlist">
+      <div>
+        <div>
           <Playlist tracks={this.state.tracks} handleOnClick={this._handleItemClick.bind(this)} />
           <PlayButton status={this.state.currentState} handleOnClick={this._handleButtonClick.bind(this)} />
         </div>

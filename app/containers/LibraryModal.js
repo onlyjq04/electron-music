@@ -7,19 +7,8 @@ const dialog = require('electron').remote.dialog;
 class LibraryModal extends React.Component {
   constructor(props) {
     super(props);
-    this.title = 'Libraries:';
-    this.controls = null;
-    this.state = {
-      content: null
-    };
-  }
-
-  componentDidMount() {
     let self = this;
-    let content = this.constructContent();
-    this.setState({
-      content: content
-    });
+    this.title = 'Libraries:';
     this.controls = (function() {
       return (
         <div>
@@ -27,15 +16,27 @@ class LibraryModal extends React.Component {
         </div>
       );
     })();
+    this.state = {
+      content: null
+    };
+  }
+
+  componentDidMount() {
+    let content = this.constructContent();
+    this.setState({
+      content: content
+    });
   }
 
   constructContent() {
     return playListStore.listLibraries().map(lib => {
       return (
-        <span style={{display: 'inline', paddingRight: '5px'}}>
-          {lib}
-          <i className="fa fa-times" onClick={this.deleteLib(lib).bind(this)} />
-        </span>
+        <div>
+          <i className="fa fa-times modal-ele-ctrl" onClick={this.deleteLib(lib).bind(this)} />
+          <span className="modal-ele">
+            {lib}
+          </span>
+        </div>
       );
     });
   }
@@ -45,10 +46,11 @@ class LibraryModal extends React.Component {
     return function() {
       dialog.showOpenDialog(
         {
+          buttonLabel: 'Add',
           properties: ['openDirectory', 'multiSelections', 'createDirectory']
         },
         function(filePath) {
-          if (filePath.length > 0) {
+          if (filePath && filePath.length > 0) {
             playListStore.addToLib(filePath[0]);
             self.setState({
               content: self.constructContent()
@@ -73,8 +75,13 @@ class LibraryModal extends React.Component {
     return (
       <div>
         {this.props.show
-          ? <ModalTemplate controls={this.controls} content={this.state.content} title={this.title} />
-          : <div />}
+          ? <ModalTemplate
+              controls={this.controls}
+              content={this.state.content}
+              title={this.title}
+              closeCtrl={this.props.close}
+            />
+          : null}
       </div>
     );
   }

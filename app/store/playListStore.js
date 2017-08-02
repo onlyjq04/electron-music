@@ -17,10 +17,10 @@ const playListStore = {
     return library.addLibraryPath(dir);
   },
   deleteLibrary(dir) {
-    library.deleteLibraryPath(dir);
+    return library.deleteLibraryPath(dir);
   },
   notifyOnClick(song) {
-    let notif = new window.Notification('You have clicked on a song', {
+    let notif = new window.Notification('Now Playing', {
       body: song,
       silent: true
     });
