@@ -2,18 +2,31 @@ import React from 'react';
 function Playlist(props) {
   let playlist = props.tracks.map((t, idx) => {
     return (
-      <div key={idx}>
-        <li className="playlist-item" onClick={props.handleOnClick.bind(this, t)}>
+      <tr key={idx} className="playlist-item">
+        <td>
+          {idx + 1}
+        </td>
+        <td className="clickable" onClick={props.handleOnClick.bind(this, t)}>
           {t.title}
-        </li>
-      </div>
+        </td>
+      </tr>
     );
   });
 
   return (
-    <ol className="playlist">
-      {playlist}
-    </ol>
+    <div className="playlist">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Track Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {playlist}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

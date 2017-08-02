@@ -1,51 +1,111 @@
 import React from 'react';
-
 import Playlist from '../components/Playlist';
-import PlayButton from '../components/PlayButton';
-import playListStore from '../store/playListStore';
+import Player from '../components/Player';
+
+const library = require('../model/library');
+const {ipcRenderer} = require('electron');
 
 class MusicPlayerContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.currentPlaying = null;
     this.state = {
       tracks: [],
-      currentState: 'paused'
+      currentState: 'init',
+      playingUrl: null
     };
   }
 
   componentDidMount() {
     this.setState({
-      tracks: playListStore.getTracks()
+      tracks: library.getContent()
     });
   }
 
   _handleItemClick(track) {
-    let returnedState;
-    playListStore.notifyOnClick(track.title);
-
-    returnedState = playListStore.togglePlay(this.state.currentState, track);
-
-    this.setState({
-      currentState: returnedState
+    let notif = new window.Notification('Now Playing', {
+      body: track.title,
+      silent: true
     });
+    ipcRenderer.send('track', track);
+    switch (this.state.currentState) {
+      case 'init':
+        this.currentPlaying = new Audio(track.url);
+        this.currentPlaying.play();
+        this.setState({
+          currentState: 'playing',
+          playingUrl: track.url
+        });
+        return;
+      case 'playing':
+        if (track.url === this.state.playingUrl) {
+          this.currentPlaying.pause();
+          this.setState({
+            currentState: 'paused'
+          });
+        } else {
+          this.currentPlaying.pause();
+          this.currentPlaying = new Audio(track.url);
+          this.currentPlaying.play();
+          this.setState({
+            playingUrl: track.url
+          });
+        }
+        return;
+      case 'paused':
+        if (track.url === this.state.playingUrl) {
+          this.currentPlaying.play();
+          this.setState({
+            currentState: 'playing'
+          });
+        } else {
+          this.currentPlaying = new Audio(track.url);
+          this.currentPlaying.play();
+          this.setState({
+            currentState: 'playing',
+            playingUrl: track.url
+          });
+        }
+        return;
+    }
   }
 
-  _handleButtonClick() {
-    let returnedState;
-    returnedState = playListStore.togglePlay(this.state.currentState);
-    this.setState({
-      currentState: returnedState
-    });
+  _playOnClick() {
+    switch (this.state.currentState) {
+      case 'init':
+        return;
+      case 'playing':
+        this.currentPlaying.pause();
+        this.setState({
+          currentState: 'paused'
+        });
+        return;
+      case 'paused':
+        this.currentPlaying.play();
+        this.setState({
+          currentState: 'playing'
+        });
+        return;
+    }
+  }
+
+  getPlayButtonType() {
+    switch (this.state.currentState) {
+      case 'init':
+        return 'play';
+      case 'playing':
+        return 'pause';
+      case 'paused':
+        return 'play';
+    }
   }
 
   render() {
-    // let buttonName = this.state.currentState === 'play' ? 'Pause' : 'Play';
-
     return (
       <div>
         <div>
           <Playlist tracks={this.state.tracks} handleOnClick={this._handleItemClick.bind(this)} />
-          <PlayButton status={this.state.currentState} handleOnClick={this._handleButtonClick.bind(this)} />
+          <Player playerStatus={this.getPlayButtonType()} playOnClick={this._playOnClick.bind(this)} />
         </div>
       </div>
     );

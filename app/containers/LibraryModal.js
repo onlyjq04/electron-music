@@ -1,7 +1,7 @@
 import React from 'react';
-import playListStore from '../store/playListStore';
 import ModalTemplate from '../components/ModalTemplate';
 
+const library = require('../model/library')
 const dialog = require('electron').remote.dialog;
 
 class LibraryModal extends React.Component {
@@ -29,7 +29,7 @@ class LibraryModal extends React.Component {
   }
 
   constructContent() {
-    return playListStore.listLibraries().map(lib => {
+    return library.listLibraryPath().map(lib => {
       return (
         <div>
           <i className="fa fa-times modal-ele-ctrl" onClick={this.deleteLib(lib).bind(this)} />
@@ -51,7 +51,7 @@ class LibraryModal extends React.Component {
         },
         function(filePath) {
           if (filePath && filePath.length > 0) {
-            playListStore.addToLib(filePath[0]);
+            library.addLibraryPath(filePath[0]);
             self.setState({
               content: self.constructContent()
             });
@@ -64,7 +64,7 @@ class LibraryModal extends React.Component {
   deleteLib(dir) {
     let self = this;
     return function() {
-      playListStore.deleteLibrary(dir);
+      library.deleteLibraryPath(dir);
       self.setState({
         content: self.constructContent()
       });

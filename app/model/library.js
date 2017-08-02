@@ -6,6 +6,9 @@ const defaultMusicDir = require('electron').remote.app.getPath('music');
 const musicIndexFileName = 'music-index.json';
 const settingFileName = 'user-setting.json';
 
+const remote = require('electron').remote;
+const {app} = remote;
+
 let userData, content, indexPath;
 
 let initialized = false;
@@ -35,9 +38,8 @@ function _buildIndex() {
   _loadContent();
 }
 
-module.exports = function(configPath) {
+function init(configPath) {
   const userSettingPath = path.join(configPath, settingFileName);
-  console.debug(configPath);
   if (!initialized) {
     if (!fs.existsSync(userSettingPath)) {
       userData = {
@@ -90,4 +92,7 @@ module.exports = function(configPath) {
     //   return fs.appendFileAsync(musicIndexPath, data);
     // },
   };
-};
+}
+
+module.exports = init(app.getPath('userData'));
+
