@@ -1,17 +1,9 @@
 require('./modalTemplate.scss');
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function ModalTemplate(props) {
-  let contentList = props.content || [];
-  let contentElements = contentList.map((item, index) => {
-    return (
-      <ul key={index}>
-        {item}
-      </ul>
-    );
-  });
-
   return (
     <div className="modal-show">
       <div className="modal-content">
@@ -19,15 +11,16 @@ function ModalTemplate(props) {
         <h2>
           {props.title}
         </h2>
-        <li className="inline-list">
-          {contentElements}
-        </li>
-        <div>
-          {props.controls}
-        </div>
+        <hr/>
+        {props.children}
       </div>
     </div>
   );
 }
+
+ModalTemplate.propTypes = {
+  closeCtrl: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default ModalTemplate;
