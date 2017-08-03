@@ -1,42 +1,49 @@
 import React from 'react';
 import ModalTemplate from '../components/ModalTemplate';
+import PropTypes from 'prop-types';
 
-const library = require('../model/library')
+const library = require('../model/library');
 const dialog = require('electron').remote.dialog;
 
 class LibraryModal extends React.Component {
   constructor(props) {
     super(props);
-    let self = this;
     this.title = 'Libraries:';
-    this.controls = (function() {
-      return (
-        <div>
-          <button onClick={self.addToLib().bind(self)}>Add</button>
-        </div>
-      );
-    })();
     this.state = {
-      content: null
+      content: null,
+      isOpened: this.props.isOpened
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let content = this.constructContent();
+    this.props.onRef(this);
     this.setState({
       content: content
     });
   }
 
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isOpened !== this.state.isOpened) {
+      this.setState({
+        isOpened: nextProps.isOpened
+      });
+    }
+  }
+
   constructContent() {
-    return library.listLibraryPath().map(lib => {
+    return library.listLibraryPath().map((lib, i) => {
       return (
-        <div>
+        <li className="inline-list" key={i}>
           <i className="fa fa-times modal-ele-ctrl" onClick={this.deleteLib(lib).bind(this)} />
           <span className="modal-ele">
             {lib}
           </span>
-        </div>
+        </li>
       );
     });
   }
@@ -71,20 +78,30 @@ class LibraryModal extends React.Component {
     };
   }
 
+  toggle() {
+    this.setState({
+      isOpened: !this.state.isOpened
+    });
+  }
+
   render() {
     return (
       <div>
-        {this.props.show
-          ? <ModalTemplate
-              controls={this.controls}
-              content={this.state.content}
-              title={this.title}
-              closeCtrl={this.props.close}
-            />
+        {this.state.isOpened
+          ? <ModalTemplate title={this.title} closeCtrl={this.toggle.bind(this)}>
+              <ul>
+                {this.state.content}
+              </ul>
+              <button onClick={this.addToLib().bind(this)}>Add</button>
+            </ModalTemplate>
           : null}
       </div>
     );
   }
 }
+
+LibraryModal.PropTypes = {
+  onRef: PropTypes.func.isRequired
+};
 
 export default LibraryModal;

@@ -8,21 +8,18 @@ class TopBar extends React.Component {
       showLibraryModal: false
     };
   }
-
-  toggleModal(e) {
-    e.preventDefault();
-    this.setState({
-      showLibraryModal: !this.state.showLibraryModal
-    });
+  
+  onButtonClick() {
+    this.libraryModal.toggle();
   }
 
   render() {
     return (
       <div>
-        <LibraryModal show={this.state.showLibraryModal} close={this.toggleModal.bind(this)} />
+        <LibraryModal isOpened={false} onRef={ref=>(this.libraryModal = ref)}/>
         <div className="fixed-top">
           <span className="logo" />
-          <div className="menu-click" onClick={this.toggleModal.bind(this)}>
+          <div className="menu-click" onClick={this.onButtonClick.bind(this)}>
             Libraries
           </div>
         </div>
